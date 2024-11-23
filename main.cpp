@@ -2,16 +2,16 @@
 #include <Windows.h>
 
 
-
 template<typename NodeData>
 class List {
 public:
     List();
     ~List();
 
+    void pop_front();
+    void clear();
     void push_back(NodeData data);
     int GetSize() {return Size;}
-
     NodeData& operator[](const int index);
 
 private:
@@ -41,7 +41,7 @@ List<NodeData>::List() {
 
 template<typename NodeData>
 List<NodeData>::~List() {
-
+    clear();
 }
 
 template<typename NodeData>
@@ -73,6 +73,23 @@ NodeData& List<NodeData>::operator[](const int index) {
     }
 }
 
+template<typename NodeData>
+void List<NodeData>::clear() {
+    while(Size) {
+        pop_front();
+    }
+}
+
+template<typename NodeData>
+void List<NodeData>::pop_front() {
+    Node *temp = head;
+
+    head = head->pNext;
+    delete temp;
+
+    --Size;
+}
+
 int main() {
     SetConsoleCP(65001);
     SetConsoleOutputCP(65001);
@@ -87,6 +104,15 @@ int main() {
 
 
     std::cout << lst.GetSize() << std::endl;
+
+    lst.pop_front();
+
+    std::cout << lst.GetSize() << std::endl;
+
+    lst.clear();
+
+    std::cout << lst.GetSize() << std::endl;
+
     return 0;
 
 }
