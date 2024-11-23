@@ -1,2 +1,2 @@
 # LinkedListcpp
-Linked List written in C++
+STL library linked list and its methods implementation in C++ 
