@@ -9,8 +9,12 @@ public:
     ~List();
 
     void pop_front();
+    void pop_back();
     void clear();
     void push_back(NodeData data);
+    void push_front(NodeData data);
+    void insert(NodeData data, int index);
+    void removeAt(int index);
     int GetSize() {return Size;}
     NodeData& operator[](const int index);
 
@@ -90,6 +94,49 @@ void List<NodeData>::pop_front() {
     --Size;
 }
 
+template <typename NodeData>
+void List<NodeData>::pop_back() {
+    removeAt(Size - 1);
+}
+
+template<typename NodeData>
+void List<NodeData>::push_front(NodeData data) {
+    head = new Node(data, head);
+    ++Size;
+}
+
+template<typename NodeData>
+void List<NodeData>::insert(NodeData data, int index) {
+    if (index == 0) {
+        push_front(data);
+    }
+    Node *previous = this->head;
+    for (int i = 0; i < index - 1; ++i) {
+        previous = previous->pNext;
+    }
+
+    Node *newNode = new Node(data, previous->pNext);
+    previous->pNext = newNode;
+
+    ++Size;
+}
+
+template <typename NodeData>
+void List<NodeData>::removeAt(int index) {
+    if (index == 0) {
+        pop_front();
+    }
+    Node *previous = this->head;
+    for (int i = 0; i < index - 1; ++i) {
+        previous = previous->pNext;
+    }
+    Node *delElem = previous->pNext;
+    previous->pNext = delElem->pNext;
+
+    delete delElem;
+    --Size;
+}
+
 int main() {
     SetConsoleCP(65001);
     SetConsoleOutputCP(65001);
@@ -102,10 +149,22 @@ int main() {
 
     std::cout << lst[2] << std::endl;
 
+    lst.push_front(77);
+    lst.push_front(177);
+
+    lst.insert(127, 2);
+
+    for(int i = 0; i < lst.GetSize(); ++i) {
+        std::cout << lst[i] << std::endl;
+    }
 
     std::cout << lst.GetSize() << std::endl;
 
     lst.pop_front();
+
+    std::cout << lst.GetSize() << std::endl;
+
+    lst.removeAt(2);
 
     std::cout << lst.GetSize() << std::endl;
 
